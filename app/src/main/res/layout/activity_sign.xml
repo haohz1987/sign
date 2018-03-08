@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical" >
+
+    <include layout="@layout/top_bar" />
+
+    <com.hhz.sign.TextViewTTF
+        android:id="@+id/trans_sc_tv_1"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="移动支付凭证"
+        android:textColor="@android:color/black"
+        android:textSize="20sp" />
+    <FrameLayout
+        android:id="@+id/signature_container"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/transfer_stroke_bg2"
+        android:padding="6dp" >
+
+        <ImageView
+            android:id="@+id/iv_signature"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:contentDescription="客户签名" />
+
+        <TextView
+            android:id="@+id/tv_signature_hints"
+            android:textSize="22sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:layout_gravity="center"
+            android:text="点击此处签名"
+            android:textColor="#DDDDDD" />
+    </FrameLayout>
+
+</LinearLayout>

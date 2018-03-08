@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">支付凭证</string>
+    <string name="no_signature_msg">请您尽量在屏幕范围内用正楷签名，保持清晰可见</string>
+</resources>

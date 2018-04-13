@@ -1,4 +1,4 @@
-package com.hhz.sign;
+package com.hhz.sign.view;
 
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout.LayoutParams;

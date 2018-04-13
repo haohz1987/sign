@@ -6,14 +6,24 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.Toast;
+
+import com.hhz.sign.view.AbTitleBar;
+import com.hhz.sign.view.ActionBar;
+import com.hhz.sign.view.VerificationCodeView;
 
 import java.io.ByteArrayInputStream;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -23,6 +33,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final int REQUEST_SIGNATURE = 1;
     private AbTitleBar myActionBar;
     private ImageView ivSignature;
+    private VerificationCodeView verificationCodeView;
+    private EditText mInput;
+    private ProgressBar loadingcode_progress;
+    private String inputStr;
+    private Button btn_confirm;
+    private String veriCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +48,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LinearLayout layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.activity_sign, null);
         mScrollView.addView(layout);
         ivSignature = layout.findViewById(R.id.iv_signature);
+        verificationCodeView = layout.findViewById(R.id.verificationcodeview);
+        verificationCodeView.setOnClickListener(this);
+        mInput = layout.findViewById(R.id.et_input);
+        loadingcode_progress = layout.findViewById(R.id.loadingcode_progress);
+        btn_confirm = layout.findViewById(R.id.btn_confirm);
+        btn_confirm.setOnClickListener(this);
         layout.findViewById(R.id.signature_container).setOnClickListener(this);
         ivSignature.setOnClickListener(this);
 
@@ -47,6 +69,57 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 throw new RuntimeException("please use top_bar.xml");
             }
+        }
+        loadingcode_progress.setVisibility(View.GONE);
+        getVerificationCode();
+    }
+    /**
+     * 获取验证码
+     **/
+    private void getVerificationCode() {
+        loadingcode_progress.setVisibility(View.VISIBLE);
+        verificationCodeView.postDelayed(ENABLE_AGAIN,500);
+        loadingcode_progress.setVisibility(View.GONE);
+        veriCode = getCharAndNumr(4);
+        updateLocalVerificationCode(veriCode);
+        LogT.w("产生随机数："+ veriCode);
+    }
+    public static String getCharAndNumr(int length) {
+        StringBuilder val = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            // 输出字母还是数字
+            String charOrNum = random.nextInt(2) % 2 == 0 ? "char" : "num";
+            // 字符串
+            if ("char".equalsIgnoreCase(charOrNum)) {
+                // 取得大写字母还是小写字母
+                int choice = random.nextInt(2) % 2 == 0 ? 65 : 97;
+                val.append((char) (choice + random.nextInt(26)));
+            } else if ("num".equalsIgnoreCase(charOrNum)) {
+                // 数字
+                val.append(String.valueOf(random.nextInt(10)));
+            }
+        }
+        return val.toString().toUpperCase();
+    }
+    private static boolean enabled = true;
+    private static final Runnable ENABLE_AGAIN = new Runnable() {
+        @Override
+        public void run() {
+            enabled = true;
+        }
+    };
+    /**
+     * 刷新验证码
+     *
+     * @param code
+     */
+    private void updateLocalVerificationCode(String code) {
+        if (verificationCodeView != null) {
+            mInput.setText("");
+            verificationCodeView.setVisibility(View.VISIBLE);
+            loadingcode_progress.setVisibility(View.INVISIBLE);
+            verificationCodeView.updateChar(code);
         }
     }
 
@@ -74,11 +147,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.iv_signature || v.getId() == R.id.signature_container) {
-            if (signatureBitmap == null) {
-                goToSignature();
-            }
-
+        switch (v.getId()){
+            case R.id.iv_signature:
+            case R.id.signature_container:
+                if (signatureBitmap == null) {
+                    goToSignature();
+                }
+                break;
+            case R.id.verificationcodeview:
+                getVerificationCode();
+                break;
+            case R.id.btn_confirm:
+                inputStr = mInput.getText().toString().trim();
+                LogT.w("输入字符："+inputStr+",生成的字符："+veriCode);
+                if(TextUtils.isEmpty(inputStr)){
+                    Toast.makeText(MainActivity.this, "请输入校验码", Toast.LENGTH_SHORT).show();
+                    getVerificationCode();
+                    return;
+                }
+                if(!verificationCodeView.validateCode(inputStr)){
+                    Toast.makeText(MainActivity.this, "验证码校验失败", Toast.LENGTH_SHORT).show();
+                    getVerificationCode();
+                }else{
+                    Toast.makeText(MainActivity.this, "验证成功", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
 

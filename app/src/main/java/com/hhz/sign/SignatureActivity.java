@@ -16,6 +16,10 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.hhz.sign.view.AbTitleBar;
+import com.hhz.sign.view.ActionBar;
+import com.hhz.sign.view.SignatureView;
+
 import java.io.ByteArrayOutputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

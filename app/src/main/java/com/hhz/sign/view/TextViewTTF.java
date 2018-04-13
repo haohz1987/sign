@@ -1,4 +1,4 @@
-package com.hhz.sign;
+package com.hhz.sign.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

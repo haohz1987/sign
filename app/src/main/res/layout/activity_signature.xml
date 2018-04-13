@@ -19,7 +19,7 @@
             android:layout_weight="1"
             android:background="@drawable/block_bg">
 
-            <com.hhz.sign.SignatureView
+            <com.hhz.sign.view.SignatureView
                 android:id="@+id/hpSigView"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"

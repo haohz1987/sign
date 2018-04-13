@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hhz.sign;
+package com.hhz.sign.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -30,6 +30,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+
+import com.hhz.sign.AbViewUtil;
+import com.hhz.sign.LogT;
+import com.hhz.sign.R;
 
 
 /**
@@ -282,7 +286,7 @@ public class AbTitleBar extends LinearLayout {
         AbViewUtil.measureView(this.logoView);
         int leftWidth = this.logoView.getMeasuredWidth();
         int rightWidth = this.rightLayout.getMeasuredWidth();
-        LogT.d("测量布局的宽度：" + leftWidth + "," + rightWidth);
+        LogT.d("测量TitleBar布局的宽度：" + leftWidth + "," + rightWidth);
         this.titleTextLayoutParams.rightMargin = 0;
         this.titleTextLayoutParams.leftMargin = 0;
         // 全部中间靠
@@ -299,8 +303,7 @@ public class AbTitleBar extends LinearLayout {
                     this.titleTextBtn.setGravity(Gravity.CENTER);
                     this.rightLayout.setHorizontalGravity(Gravity.RIGHT);
                 }
-                if (gravity2 == Gravity.CENTER
-                        || gravity2 == Gravity.CENTER_HORIZONTAL) {
+                if (gravity2 == Gravity.CENTER || gravity2 == Gravity.CENTER_HORIZONTAL) {
                     this.titleTextLayout.setGravity(Gravity.CENTER_HORIZONTAL);
                     this.rightLayout.setHorizontalGravity(Gravity.LEFT);
                     this.titleTextBtn.setGravity(Gravity.CENTER);
